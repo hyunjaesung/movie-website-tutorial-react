@@ -20,7 +20,7 @@ class App extends Component {
         <Movie
           title={movie.title}
           poster={movie.large_cover_image}
-          key={index}
+          key={movie.id} // 컴포넌트 key는 인덱스로 사용안하는게좋음 느림
         />
       );
     });
