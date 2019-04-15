@@ -15,12 +15,15 @@ class App extends Component {
 
   _renderMovies = () => {
     //_를 붙인이유는 리액트 자체 함수도 많아서 섞임방지
-    const movies = this.state.movies.map((movie, index) => {
+    const movies = this.state.movies.map(movie => {
+      console.log(movie);
       return (
         <Movie
-          title={movie.title}
-          poster={movie.large_cover_image}
+          title={movie.title_english}
+          poster={movie.medium_cover_image}
           key={movie.id} // 컴포넌트 key는 인덱스로 사용안하는게좋음 느림
+          genres={movie.genres}
+          synopsis={movie.synopsis}
         />
       );
     });
