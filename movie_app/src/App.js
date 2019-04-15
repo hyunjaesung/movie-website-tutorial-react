@@ -10,42 +10,38 @@ class App extends Component {
   state = {};
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        movies: [
-          {
-            title: "Matirx",
-            poster:
-              "http://2korea.hani.co.kr/files/attach/images/64/981/316/001.jpg"
-          },
-          {
-            title: "Avengers",
-            poster:
-              "https://upload.wikimedia.org/wikipedia/ko/thumb/9/92/%EC%96%B4%EB%B2%A4%EC%A0%B8%EC%8A%A4_%EC%9D%B8%ED%94%BC%EB%8B%88%ED%8B%B0_%EC%9B%8C.jpg/250px-%EC%96%B4%EB%B2%A4%EC%A0%B8%EC%8A%A4_%EC%9D%B8%ED%94%BC%EB%8B%88%ED%8B%B0_%EC%9B%8C.jpg"
-          },
-          {
-            title: "Captain Marvel",
-            poster:
-              "https://t1.daumcdn.net/movie/9633f50f32a34df2ae91dbac1203062e1551065947586"
-          },
-          {
-            title: "Transpotting",
-            poster:
-              "https://s-i.huffpost.com/gen/3388952/thumbs/o-CHANNEL-FOUR-FILMS-570.jpg?7"
-          }
-        ]
-      });
-    }, 5000);
+    this._getMovies();
   }
 
   _renderMovies = () => {
     //_를 붙인이유는 리액트 자체 함수도 많아서 섞임방지
     const movies = this.state.movies.map((movie, index) => {
-      return <Movie title={movie.title} poster={movie.poster} key={index} />;
+      return (
+        <Movie
+          title={movie.title}
+          poster={movie.large_cover_image}
+          key={index}
+        />
+      );
     });
     return movies;
   };
 
+  _getMovies = async () => {
+    const movies = await this._callApi();
+    // await는 callApi가 끝나는걸 기다리고 return value가 뭐든 movies에 넣음
+    // await 에 있는 작업이 성공이든 실패든 끝나야 setState가 실행됨
+    this.setState({
+      movies
+    });
+  };
+
+  _callApi = () => {
+    return fetch("https://yts.am/api/v2/list_movies.json?sort_by=like_count")
+      .then(potato => potato.json())
+      .then(json => json.data.movies) // 대괄호없어서 그냥 바로 리턴해줌
+      .catch(err => console.log(err));
+  };
   render() {
     return (
       <div className="App">
