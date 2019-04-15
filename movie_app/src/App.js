@@ -21,9 +21,26 @@ const movies = [
 ];
 
 class App extends Component {
+  // Render : componentWillMount() -> render() -> componentDidMount()
+  // Update : componentReceiveProps() -> shouldComponentUpdate() -> componentWillUpdate()
+  //          -> render() -> componentDidUpdate()
+  state = {
+    greeting: "hello!"
+  };
+
+  componentDidMount() {
+    // component가 마운트 될때마다 hello again이 뜸
+    setTimeout(() => {
+      this.setState({
+        greeting: "hello again!"
+      });
+    }, 2000);
+  }
+
   render() {
     return (
       <div className="App">
+        {this.state.greeting}
         {movies.map((movie, index) => {
           // index는 우리가 제공하는 리스트의 숫자 의미 0부터 2까지 들어갈것
           return (
